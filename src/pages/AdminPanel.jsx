@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db, auth } from '../config/firebase';
-import { collection, getDocs, doc, updateDoc, arrayUnion, getDoc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, arrayUnion, getDoc, deleteDoc, setDoc } from 'firebase/firestore';
 import { isAdmin } from '../config/adminConfig';
+import { coursesData } from '../data/coursesData';
 
 export default function AdminPanel() {
   const [users, setUsers] = useState([]);
@@ -114,6 +115,33 @@ export default function AdminPanel() {
     }
   };
 
+  // 🔥 NOWA FUNKCJA: Upload kursów do Firebase
+  const uploadCoursesToFirebase = async () => {
+    try {
+      console.log('🚀 Rozpoczynam upload kursów do Firebase...');
+      console.log('📦 Dane kursów:', coursesData);
+
+      let uploadedCount = 0;
+      const courseKeys = Object.keys(coursesData);
+
+      for (const courseId of courseKeys) {
+        const courseData = coursesData[courseId];
+        console.log(`📚 Uploading: ${courseId}`, courseData);
+
+        // Utwórz dokument w kolekcji 'courses' z ID kursu
+        await setDoc(doc(db, 'courses', courseId), courseData);
+        uploadedCount++;
+        console.log(`✅ Uploaded ${uploadedCount}/${courseKeys.length}: ${courseId}`);
+      }
+
+      console.log(`🎉 Sukces! Załadowano ${uploadedCount} kursów do Firebase!`);
+      alert(`✅ Sukces!\n\nZaładowano ${uploadedCount} kursów do bazy danych Firestore.\n\nMożesz sprawdzić w Firebase Console → Firestore Database → courses`);
+    } catch (error) {
+      console.error('❌ Błąd podczas upload\'u kursów:', error);
+      alert(`❌ Błąd!\n\n${error.message}\n\nSprawdź consolę (F12) po więcej szczegółów.`);
+    }
+  };
+
   if (loading) {
     return <div className="loading">Ładowanie panelu admina...</div>;
   }
@@ -214,6 +242,44 @@ export default function AdminPanel() {
         {activeTab === 'courses' && (
           <div className="courses-section">
             <h2>Zarządzanie kursami</h2>
+            
+            {/* 🔥 NOWY PRZYCISK DO UPLOAD KURSÓW */}
+            <div style={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              padding: '2rem',
+              borderRadius: '12px',
+              marginBottom: '2rem',
+              color: 'white',
+              textAlign: 'center'
+            }}>
+              <h3 style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>
+                🔥 Załaduj kursy do Firebase
+              </h3>
+              <p style={{ marginBottom: '1.5rem', opacity: 0.9 }}>
+                Przenieś dane kursów z pliku lokalnego do bazy Firestore.<br/>
+                Ta operacja jest bezpieczna - możesz ją wykonać wielokrotnie.
+              </p>
+              <button 
+                onClick={uploadCoursesToFirebase}
+                style={{
+                  background: 'white',
+                  color: '#667eea',
+                  padding: '1rem 2rem',
+                  fontSize: '1.1rem',
+                  fontWeight: 'bold',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
+                onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
+              >
+                📤 Załaduj kursy do bazy danych
+              </button>
+            </div>
+
             <div className="courses-grid-admin">
               <div className="course-card-admin">
                 <h3>📘 Kursy językowe</h3>
