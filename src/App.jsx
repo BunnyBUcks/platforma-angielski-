@@ -22,6 +22,8 @@ import MaturaPodstawowa from './pages/MaturaPodstawowa'
 import MaturaRozszerzona from './pages/MaturaRozszerzona'
 import BusinessEnglish from './pages/BusinessEnglish'
 import BusinessEnglishC1 from './pages/BusinessEnglishC1'
+import EgzaminFCE from './pages/EgzaminFCE'
+import EgzaminCAE from './pages/EgzaminCAE'
 import NotFound from './pages/NotFound'
 import Login from './pages/Login'
 import StudentDashboard from './pages/StudentDashboard'
@@ -80,6 +82,8 @@ function App() {
               <Route path="/matura-rozszerzona" element={<MaturaRozszerzona />} />
               <Route path="/business-english" element={<BusinessEnglish />} />
               <Route path="/business-english-c1" element={<BusinessEnglishC1 />} />
+              <Route path="/egzamin-fce" element={<EgzaminFCE />} />
+              <Route path="/egzamin-cae" element={<EgzaminCAE />} />
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={user ? <StudentDashboard user={user} /> : <Login />} />
               <Route path="/admin" element={user ? <AdminPanel /> : <Login />} />

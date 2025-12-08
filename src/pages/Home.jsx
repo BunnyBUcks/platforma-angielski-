@@ -154,13 +154,13 @@ export default function Home() {
             <p>Kompleksowe przygotowanie do matury rozszerzonej</p>
             <div className="card-arrow">→</div>
           </div>
-          <div className="feature-card clickable exam-fce" onClick={() => navigate('/shop')}>
+          <div className="feature-card clickable exam-fce" onClick={() => navigate('/egzamin-fce')}>
             <span className="feature-icon">🎓</span>
             <h3>FCE (B2 First)</h3>
             <p>Cambridge English: First Certificate</p>
             <div className="card-arrow">→</div>
           </div>
-          <div className="feature-card clickable exam-cae" onClick={() => navigate('/shop')}>
+          <div className="feature-card clickable exam-cae" onClick={() => navigate('/egzamin-cae')}>
             <span className="feature-icon">🏆</span>
             <h3>CAE (C1 Advanced)</h3>
             <p>Cambridge English: Advanced Certificate</p>
