@@ -131,121 +131,29 @@ export default function Shop({ user }) {
         <p>Wybierz kurs dopasowany do Twojego poziomu lub pakiet lekcji indywidualnych</p>
       </div>
 
-      {/* KURSY POCZĄTKUJĄCE A1-A2 */}
-      <section className="courses-section">
-        <h2>📗 Kursy dla początkujących (A1-A2)</h2>
-        <p className="section-subtitle">Idealne dla osób zaczynających przygodę z językiem angielskim</p>
-        <div className="courses-grid">
-          {courses.filter(c => c.level === 'beginner').map(course => (
-            <div key={course.id} className="course-card">
-              <div className="course-header">
-                <h3>{course.name}</h3>
-                <span className="course-price">{course.price} PLN</span>
-              </div>
-              <div className="course-details">
-                <p>⏱️ {course.duration}</p>
-                <p>📚 {course.lessons} lekcji</p>
-                <p className="course-description">{course.description}</p>
-              </div>
-              <button 
-                className="btn-primary"
-                onClick={() => onBuyClick(course)}
-                disabled={loadingId === course.id}
-                style={{width: '100%', marginTop: '15px'}}
-              >
-                {loadingId === course.id ? 'Przetwarzanie...' : 'Kup teraz'}
-              </button>
+      <div className="courses-grid">
+        {courses.map(course => (
+          <div key={course.id} className={`course-card ${course.level === 'advanced' ? 'featured' : ''}`}>
+            <div className="course-header">
+              <h3>{course.name}</h3>
+              <span className="course-price">{course.price} PLN</span>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* KURSY ŚREDNIOZAAWANSOWANE B1-B2 */}
-      <section className="courses-section">
-        <h2>📘 Kursy średniozaawansowane (B1-B2)</h2>
-        <p className="section-subtitle">Rozwijaj swoje umiejętności i pewność w komunikacji</p>
-        <div className="courses-grid">
-          {courses.filter(c => c.level === 'intermediate').map(course => (
-            <div key={course.id} className="course-card">
-              <div className="course-header">
-                <h3>{course.name}</h3>
-                <span className="course-price">{course.price} PLN</span>
-              </div>
-              <div className="course-details">
-                <p>⏱️ {course.duration}</p>
-                <p>📚 {course.lessons} lekcji</p>
-                <p className="course-description">{course.description}</p>
-              </div>
-              <button 
-                className="btn-primary"
-                onClick={() => onBuyClick(course)}
-                disabled={loadingId === course.id}
-                style={{width: '100%', marginTop: '15px'}}
-              >
-                {loadingId === course.id ? 'Przetwarzanie...' : 'Kup teraz'}
-              </button>
+            <div className="course-details">
+              <p>⏱️ {course.duration}</p>
+              <p>📚 {course.lessons}</p>
+              <p className="course-description">{course.description}</p>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* KURSY ZAAWANSOWANE C1-C2 */}
-      <section className="courses-section">
-        <h2>📕 Kursy zaawansowane (C1-C2)</h2>
-        <p className="section-subtitle">Opanuj język na najwyższym poziomie</p>
-        <div className="courses-grid">
-          {courses.filter(c => c.level === 'advanced').map(course => (
-            <div key={course.id} className="course-card featured">
-              <div className="course-header">
-                <h3>{course.name}</h3>
-                <span className="course-price">{course.price} PLN</span>
-              </div>
-              <div className="course-details">
-                <p>⏱️ {course.duration}</p>
-                <p>📚 {course.lessons} lekcji</p>
-                <p className="course-description">{course.description}</p>
-              </div>
-              <button 
-                className="btn-primary"
-                onClick={() => onBuyClick(course)}
-                disabled={loadingId === course.id}
-                style={{width: '100%', marginTop: '15px'}}
-              >
-                {loadingId === course.id ? 'Przetwarzanie...' : 'Kup teraz'}
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* PAKIETY LEKCJI INDYWIDUALNYCH */}
-      <section className="courses-section">
-        <h2>👨‍🏫 Lekcje indywidualne</h2>
-        <p className="section-subtitle">Elastyczne terminy i program dopasowany do Twoich potrzeb</p>
-        <div className="courses-grid">
-          {courses.filter(c => c.level === 'individual').map(course => (
-            <div key={course.id} className="course-card individual">
-              <div className="course-header">
-                <h3>{course.name}</h3>
-                <span className="course-price">{course.price} PLN</span>
-              </div>
-              <div className="course-details">
-                <p>⏱️ {course.duration}</p>
-                <p>📚 {course.lessons}</p>
-                <p className="course-description">{course.description}</p>
-              </div>
-              <button 
-                className="btn-primary"
-                onClick={() => onBuyClick(course)}
-                disabled={loadingId === course.id}
-                style={{width: '100%', marginTop: '15px'}}
-              >
-                {loadingId === course.id ? 'Przetwarzanie...' : 'Kup teraz'}
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
+            <button 
+              className="btn-primary"
+              onClick={() => onBuyClick(course)}
+              disabled={loadingId === course.id}
+              style={{width: '100%', marginTop: '15px'}}
+            >
+              {loadingId === course.id ? 'Przetwarzanie...' : 'Kup teraz'}
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
