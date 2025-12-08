@@ -131,25 +131,103 @@ export default function Shop({ user }) {
         <p>Wybierz kurs dopasowany do Twojego poziomu lub pakiet lekcji indywidualnych</p>
       </div>
 
-      <div className="courses-grid">
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '2rem',
+        padding: '2rem',
+        maxWidth: '1200px',
+        margin: '0 auto'
+      }}>
         {courses.map(course => (
-          <div key={course.id} className={`course-card ${course.level === 'advanced' ? 'featured' : ''}`}>
-            <div className="course-header">
-              <h3>{course.name}</h3>
-              <span className="course-price">{course.price} PLN</span>
+          <div 
+            key={course.id} 
+            style={{
+              background: course.level === 'advanced' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 
+                         course.level === 'individual' ? 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' : 
+                         'white',
+              border: course.level === 'beginner' || course.level === 'intermediate' ? '2px solid #e0e0e0' : 'none',
+              borderRadius: '16px',
+              padding: '1.5rem',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              aspectRatio: '1 / 1',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              cursor: 'pointer',
+              color: course.level === 'advanced' || course.level === 'individual' ? 'white' : '#333'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-8px)'
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'
+            }}
+          >
+            <div>
+              <h3 style={{
+                fontSize: '1.3rem',
+                fontWeight: 'bold',
+                marginBottom: '0.5rem',
+                lineHeight: '1.3'
+              }}>
+                {course.name}
+              </h3>
+              <div style={{
+                fontSize: '2rem',
+                fontWeight: 'bold',
+                color: course.level === 'advanced' || course.level === 'individual' ? '#fff' : '#667eea',
+                marginBottom: '1rem'
+              }}>
+                {course.price} PLN
+              </div>
+              <div style={{
+                fontSize: '0.9rem',
+                opacity: 0.9,
+                marginBottom: '0.5rem'
+              }}>
+                ⏱️ {course.duration} • 📚 {course.lessons}
+              </div>
+              <p style={{
+                fontSize: '0.85rem',
+                opacity: 0.85,
+                lineHeight: '1.4',
+                marginBottom: '1rem'
+              }}>
+                {course.description}
+              </p>
             </div>
-            <div className="course-details">
-              <p>⏱️ {course.duration}</p>
-              <p>📚 {course.lessons}</p>
-              <p className="course-description">{course.description}</p>
-            </div>
+            
             <button 
-              className="btn-primary"
               onClick={() => onBuyClick(course)}
               disabled={loadingId === course.id}
-              style={{width: '100%', marginTop: '15px'}}
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: loadingId === course.id ? 'not-allowed' : 'pointer',
+                background: course.level === 'advanced' || course.level === 'individual' ? 'rgba(255,255,255,0.2)' : '#667eea',
+                color: course.level === 'advanced' || course.level === 'individual' ? 'white' : 'white',
+                transition: 'all 0.3s ease',
+                backdropFilter: 'blur(10px)',
+                opacity: loadingId === course.id ? 0.6 : 1
+              }}
+              onMouseEnter={(e) => {
+                if (loadingId !== course.id) {
+                  e.currentTarget.style.background = course.level === 'advanced' || course.level === 'individual' ? 'rgba(255,255,255,0.3)' : '#5568d3'
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = course.level === 'advanced' || course.level === 'individual' ? 'rgba(255,255,255,0.2)' : '#667eea'
+              }}
             >
-              {loadingId === course.id ? 'Przetwarzanie...' : 'Kup teraz'}
+              {loadingId === course.id ? 'Przetwarzanie...' : 'Kup teraz 🛒'}
             </button>
           </div>
         ))}
