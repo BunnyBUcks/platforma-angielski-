@@ -5,13 +5,12 @@ import { getStorage } from 'firebase/storage'
 
 // Firebase Configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBKIJNMdT8lq2eELJsodRe5ibia-sxmN_M",
-  authDomain: "angielski-z-ania.firebaseapp.com",
-  projectId: "angielski-z-ania",
-  storageBucket: "angielski-z-ania.firebasestorage.app",
-  messagingSenderId: "487773922284",
-  appId: "1:487773922284:web:2b215b00afa4550219d6c9",
-  measurementId: "G-33WZHEC8Q4"
+  apiKey: "AIzaSyDBjQbxdt8C7vsOQLcwS-_VXRMDoVZmUBM",
+  authDomain: "angielski-z-ania-1.firebaseapp.com",
+  projectId: "angielski-z-ania-1",
+  storageBucket: "angielski-z-ania-1.firebasestorage.app",
+  messagingSenderId: "486720379632",
+  appId: "1:486720379632:web:77a5c03ca911848bef4035"
 }
 
 const app = initializeApp(firebaseConfig)
