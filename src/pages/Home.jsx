@@ -92,25 +92,25 @@ export default function Home() {
         <h2>Kursy według poziomów</h2>
         <p className="section-subtitle">Wybierz kurs dopasowany do Twojego poziomu</p>
         <div className="features-grid">
-          <div className="feature-card clickable course-level-a1" onClick={() => navigate('/shop')}>
+          <div className="feature-card clickable course-level-a1" onClick={() => navigate('/kurs-a1')}>
             <span className="feature-icon">🌱</span>
             <h3>Kurs A1 - Początkujący</h3>
             <p>Pierwszy kontakt z językiem angielskim</p>
             <div className="card-arrow">→</div>
           </div>
-          <div className="feature-card clickable course-level-a2" onClick={() => navigate('/shop')}>
+          <div className="feature-card clickable course-level-a2" onClick={() => navigate('/kurs-a2')}>
             <span className="feature-icon">🌿</span>
             <h3>Kurs A2 - Podstawowy</h3>
             <p>Rozwijaj podstawowe umiejętności</p>
             <div className="card-arrow">→</div>
           </div>
-          <div className="feature-card clickable course-level-b1" onClick={() => navigate('/shop')}>
+          <div className="feature-card clickable course-level-b1" onClick={() => navigate('/kurs-b1')}>
             <span className="feature-icon">🌳</span>
             <h3>Kurs B1 - Średniozaawansowany</h3>
             <p>Pewność w codziennych sytuacjach</p>
             <div className="card-arrow">→</div>
           </div>
-          <div className="feature-card clickable course-level-b2" onClick={() => navigate('/shop')}>
+          <div className="feature-card clickable course-level-b2" onClick={() => navigate('/kurs-b2')}>
             <span className="feature-icon">🌲</span>
             <h3>Kurs B2 - Zaawansowany</h3>
             <p>Płynna komunikacja w każdej sytuacji</p>
@@ -123,13 +123,13 @@ export default function Home() {
         <h2>Angielski biznesowy</h2>
         <p className="section-subtitle">Profesjonalna komunikacja w środowisku biznesowym</p>
         <div className="features-grid">
-          <div className="feature-card clickable business-intermediate" onClick={() => navigate('/shop')}>
+          <div className="feature-card clickable business-intermediate" onClick={() => navigate('/business-english')}>
             <span className="feature-icon">💼</span>
             <h3>Business English B2</h3>
             <p>Średniozaawansowana komunikacja biznesowa</p>
             <div className="card-arrow">→</div>
           </div>
-          <div className="feature-card clickable business-advanced" onClick={() => navigate('/shop')}>
+          <div className="feature-card clickable business-advanced" onClick={() => navigate('/business-english-c1')}>
             <span className="feature-icon">📊</span>
             <h3>Business English C1</h3>
             <p>Zaawansowana komunikacja w biznesie</p>
@@ -142,13 +142,13 @@ export default function Home() {
         <h2>Przygotowanie do egzaminów</h2>
         <p className="section-subtitle">Kompleksowe kursy przygotowujące do egzaminów</p>
         <div className="features-grid">
-          <div className="feature-card clickable matura-basic" onClick={() => navigate('/shop')}>
+          <div className="feature-card clickable matura-basic" onClick={() => navigate('/matura-podstawowa')}>
             <span className="feature-icon">📝</span>
             <h3>Matura podstawowa</h3>
             <p>Kompleksowe przygotowanie do matury</p>
             <div className="card-arrow">→</div>
           </div>
-          <div className="feature-card clickable matura-advanced" onClick={() => navigate('/shop')}>
+          <div className="feature-card clickable matura-advanced" onClick={() => navigate('/matura-rozszerzona')}>
             <span className="feature-icon">📝</span>
             <h3>Matura rozszerzona</h3>
             <p>Kompleksowe przygotowanie do matury rozszerzonej</p>
