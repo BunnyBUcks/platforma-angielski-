@@ -68,6 +68,26 @@ export default function Shop({ user }) {
       level: 'advanced'
     },
     {
+      id: 'egzamin-fce',
+      name: 'FCE (B2 First) - Przygotowanie do egzaminu',
+      price: 399,
+      duration: '12 tygodni',
+      lessons: 24,
+      description: 'Kompleksowe przygotowanie do Cambridge English: First Certificate. Wszystkie 4 części egzaminu.',
+      stripePriceId: 'price_TUTAJ_WKLEJ_ID_Z_DASHBOARDU_STRIPE_DLA_FCE',
+      level: 'advanced'
+    },
+    {
+      id: 'egzamin-cae',
+      name: 'CAE (C1 Advanced) - Przygotowanie do egzaminu',
+      price: 499,
+      duration: '16 tygodni',
+      lessons: 32,
+      description: 'Premium przygotowanie do Cambridge English: Advanced. Zaawansowany trening na poziomie C1.',
+      stripePriceId: 'price_TUTAJ_WKLEJ_ID_Z_DASHBOARDU_STRIPE_DLA_CAE',
+      level: 'advanced'
+    },
+    {
       id: 'pakiet-5',
       name: 'Pakiet 5 lekcji indywidualnych',
       price: 500,
