@@ -1,0 +1,479 @@
+/* ============================================
+   TENSE MASTER - Purple Time Theme
+   ============================================ */
+
+.tense-master-container {
+  min-height: 500px;
+  padding: 2rem 1.5rem;
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tense-master-container::before {
+  content: '⏰';
+  position: absolute;
+  font-size: 20rem;
+  opacity: 0.05;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: tickTock 2s ease-in-out infinite alternate;
+}
+
+@keyframes tickTock {
+  from { transform: translate(-50%, -50%) rotate(-5deg); }
+  to { transform: translate(-50%, -50%) rotate(5deg); }
+}
+
+.game-content-tense {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header-tense {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  padding: 1rem 2rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.clock-icon {
+  font-size: 2.5rem;
+  animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.header-tense h2 {
+  color: white;
+  margin: 0;
+  font-size: 1.8rem;
+  flex: 1;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.score-badge-tense {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  color: white;
+  font-weight: 900;
+  font-size: 1.2rem;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Progress Section */
+.progress-section-tense {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.round-counter {
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.progress-dots-tense {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.dot-tense {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.dot-tense.completed {
+  background: white;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.dot-tense.active {
+  background: #fbbf24;
+  animation: dotPulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.8);
+}
+
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+}
+
+.dot-tense.pending {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Sentence Card */
+.sentence-card-tense {
+  background: white;
+  padding: 2.5rem 2rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  margin-bottom: 2rem;
+  border: 4px solid #ede9fe;
+}
+
+.verb-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  color: #7c3aed;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  border: 2px solid #c4b5fd;
+}
+
+.verb-badge strong {
+  color: #6d28d9;
+  font-weight: 900;
+}
+
+.sentence-display {
+  font-size: 1.8rem;
+  color: #1f2937;
+  margin: 0;
+  text-align: center;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+/* Tenses Grid */
+.tenses-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tense-option {
+  background: white;
+  border: 3px solid #ede9fe;
+  padding: 1.5rem 1.25rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #6d28d9;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.tense-option::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.tense-option:hover:not(.disabled-tense) {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+  border-color: #8b5cf6;
+}
+
+.tense-option:hover::before {
+  left: 100%;
+}
+
+.tense-name {
+  text-align: center;
+}
+
+.tense-option.correct-tense {
+  background: #d1fae5;
+  border-color: #10b981;
+  color: #065f46;
+  animation: correctScale 0.6s ease;
+}
+
+@keyframes correctScale {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.tense-option.incorrect-tense {
+  background: #fee2e2;
+  border-color: #ef4444;
+  color: #991b1b;
+  animation: incorrectWobble 0.5s ease;
+}
+
+@keyframes incorrectWobble {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+.tense-option.disabled-tense {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.check-mark-tense {
+  font-size: 1.5rem;
+  color: #10b981;
+  animation: checkAppear 0.4s ease;
+}
+
+@keyframes checkAppear {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Result Box */
+.result-box-tense {
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  gap: 1rem;
+  animation: slideUp 0.5s ease;
+  border: 3px solid;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.result-box-tense.correct-result {
+  background: #d1fae5;
+  border-color: #10b981;
+}
+
+.result-box-tense.incorrect-result {
+  background: #fef3c7;
+  border-color: #f59e0b;
+}
+
+.result-icon-tense {
+  font-size: 3rem;
+  flex-shrink: 0;
+}
+
+.result-content-tense {
+  flex: 1;
+}
+
+.result-content-tense h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.2rem;
+}
+
+.result-box-tense.correct-result h4 {
+  color: #065f46;
+}
+
+.result-box-tense.incorrect-result h4 {
+  color: #92400e;
+}
+
+.correct-answer-tense {
+  margin: 0 0 0.75rem 0;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 8px;
+  border-left: 4px solid #f59e0b;
+}
+
+.correct-answer-tense strong {
+  color: #b45309;
+  font-size: 1.1rem;
+}
+
+.hint-text-tense {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.result-box-tense.correct-result .hint-text-tense {
+  color: #047857;
+}
+
+.result-box-tense.incorrect-result .hint-text-tense {
+  color: #78350f;
+}
+
+/* Completion Screen */
+.completion-screen-tense {
+  background: white;
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.crown-icon {
+  font-size: 6rem;
+  animation: crownFloat 2s ease-in-out infinite;
+}
+
+@keyframes crownFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.completion-screen-tense h2 {
+  color: #1f2937;
+  margin: 1rem 0 2rem 0;
+  font-size: 2.5rem;
+}
+
+.level-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  border: 3px solid #8b5cf6;
+  color: #6d28d9;
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+}
+
+.score-circle-tense {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 2rem auto;
+  position: relative;
+}
+
+.score-circle-tense svg {
+  transform: rotate(-90deg);
+}
+
+.circle-bg-tense {
+  fill: none;
+  stroke: #ede9fe;
+  stroke-width: 14;
+}
+
+.circle-fill-tense {
+  fill: none;
+  stroke: #8b5cf6;
+  stroke-width: 14;
+  stroke-linecap: round;
+  transition: stroke-dasharray 1s ease;
+}
+
+.circle-text-tense {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.percentage-tense {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #6d28d9;
+}
+
+.score-label-tense {
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.tenses-summary {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: #f9fafb;
+  border-radius: 12px;
+}
+
+.tenses-summary h3 {
+  color: #1f2937;
+  margin: 0 0 1.5rem 0;
+}
+
+.tenses-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.tense-chip-final {
+  background: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: 50px;
+  border: 2px solid #ede9fe;
+  color: #6d28d9;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.restart-btn-tense {
+  padding: 1.25rem 3rem;
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+}
+
+.restart-btn-tense:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-tense {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .tenses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sentence-display {
+    font-size: 1.4rem;
+  }
+
+  .percentage-tense {
+    font-size: 2.5rem;
+  }
+}
