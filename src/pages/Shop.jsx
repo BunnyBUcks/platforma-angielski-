@@ -24,7 +24,7 @@ export default function Shop({ user }) {
       duration: '8 tygodni',
       lessons: 16,
       description: 'Idealne dla początkujących. Podstawy gramatyki i konwersacji.',
-      stripePriceId: 'price_TUTAJ_WKLEJ_ID_Z_DASHBOARDU_STRIPE_DLA_A1'
+      stripePriceId: 'price_1Sc9YGFFIIJBkvjRLgM5fNad'
     },
     {
       id: 'kurs-b1',
