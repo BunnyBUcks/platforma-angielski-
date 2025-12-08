@@ -21,6 +21,7 @@ export default function Navbar({ user }) {
         
         <div className="nav-links">
           <Link to="/">Strona główna</Link>
+          <Link to="/shop">Cennik / Sklep</Link>
           
           {user ? (
             <>
