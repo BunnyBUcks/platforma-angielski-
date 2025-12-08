@@ -78,7 +78,7 @@ export default function AdminPanel() {
   const grantAllCourses = async (userId) => {
     const allCourses = [
       'kurs-a1', 'kurs-a2', 'kurs-b1', 'kurs-b2',
-      'klasa-8', 'matura-podstawowa', 'matura-rozszerzona',
+      'matura-podstawowa', 'matura-rozszerzona',
       'business-b2', 'business-c1'
     ];
 
@@ -258,7 +258,6 @@ export default function AdminPanel() {
               <div className="course-card-admin">
                 <h3>🎓 Egzaminy</h3>
                 <ul>
-                  <li>klasa-8 - Klasy 1-8 (199 PLN)</li>
                   <li>matura-podstawowa - Matura podstawowa (299 PLN)</li>
                   <li>matura-rozszerzona - Matura rozszerzona (299 PLN)</li>
                 </ul>

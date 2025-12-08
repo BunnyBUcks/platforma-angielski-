@@ -31,11 +31,6 @@ export default function StudentDashboard({ user }) {
       description: 'Poziom średniozaawansowany wyższy',
       url: '/course/kurs-b2'
     },
-    'klasa-8': {
-      name: '🎓 Egzamin 8-klasisty',
-      description: 'Klasy 1-8',
-      url: '/egzamin-osmoklasisty'
-    },
     'matura-podstawowa': {
       name: '🎓 Matura podstawowa',
       description: 'Przygotowanie do matury',

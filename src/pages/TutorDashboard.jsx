@@ -17,7 +17,6 @@ export default function TutorDashboard({ user }) {
     { id: 'kurs-a2', name: 'Kurs A2 - Podstawowy wyższy' },
     { id: 'kurs-b1', name: 'Kurs B1 - Średniozaawansowany' },
     { id: 'kurs-b2', name: 'Kurs B2 - Średniozaawansowany wyższy' },
-    { id: 'klasa-8', name: 'Egzamin 8-klasisty' },
     { id: 'matura-podstawowa', name: 'Matura podstawowa' },
     { id: 'matura-rozszerzona', name: 'Matura rozszerzona' },
     { id: 'business-b2', name: 'Business English B2' },

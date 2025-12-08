@@ -18,7 +18,6 @@ import KursA1 from './pages/KursA1'
 import KursA2 from './pages/KursA2'
 import KursB1 from './pages/KursB1'
 import KursB2 from './pages/KursB2'
-import EgzaminOsmoklasisty from './pages/EgzaminOsmoklasisty'
 import MaturaPodstawowa from './pages/MaturaPodstawowa'
 import MaturaRozszerzona from './pages/MaturaRozszerzona'
 import BusinessEnglish from './pages/BusinessEnglish'
@@ -77,7 +76,6 @@ function App() {
               <Route path="/kurs-a2" element={<KursA2 />} />
               <Route path="/kurs-b1" element={<KursB1 />} />
               <Route path="/kurs-b2" element={<KursB2 />} />
-              <Route path="/egzamin-osmoklasisty" element={<EgzaminOsmoklasisty />} />
               <Route path="/matura-podstawowa" element={<MaturaPodstawowa />} />
               <Route path="/matura-rozszerzona" element={<MaturaRozszerzona />} />
               <Route path="/business-english" element={<BusinessEnglish />} />

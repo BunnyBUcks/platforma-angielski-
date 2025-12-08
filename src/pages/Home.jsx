@@ -142,12 +142,6 @@ export default function Home() {
         <h2>Przygotowanie do egzaminów</h2>
         <p className="section-subtitle">Kompleksowe kursy przygotowujące do egzaminów</p>
         <div className="features-grid">
-          <div className="feature-card clickable exam-klasa8" onClick={() => navigate('/shop')}>
-            <span className="feature-icon">🎒</span>
-            <h3>Egzamin ósmoklasisty</h3>
-            <p>Kompleksowe przygotowanie - 12 tygodni do sukcesu!</p>
-            <div className="card-arrow">→</div>
-          </div>
           <div className="feature-card clickable matura-basic" onClick={() => navigate('/shop')}>
             <span className="feature-icon">📝</span>
             <h3>Matura podstawowa</h3>
