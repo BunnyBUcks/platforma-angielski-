@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth, db } from '../config/firebase'
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, setDoc, getDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
-import { isAdmin } from '../config/adminConfig'
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true)
@@ -21,30 +20,52 @@ export default function Login() {
 
     try {
       if (isLogin) {
-        await signInWithEmailAndPassword(auth, email, password)
-        // Przekieruj admina do panelu admina, ucznia do dashboardu
-        const userIsAdmin = isAdmin(email)
-        navigate(userIsAdmin ? '/admin' : '/dashboard')
+        // --- LOGOWANIE ---
+        const userCredential = await signInWithEmailAndPassword(auth, email, password)
+        const uid = userCredential.user.uid
+        
+        // 1. Pobierz dokument użytkownika z bazy, aby sprawdzić PRAWDZIWĄ rolę
+        const userDocRef = doc(db, 'users', uid)
+        const userDoc = await getDoc(userDocRef)
+        
+        if (userDoc.exists()) {
+          const userData = userDoc.data()
+          // 2. Przekieruj na podstawie roli z bazy danych (bezpieczne)
+          if (userData.role === 'admin') {
+            navigate('/admin')
+          } else {
+            navigate('/dashboard')
+          }
+        } else {
+          // Fallback: jeśli dokument nie istnieje (np. stary user), wyślij do dashboardu
+          navigate('/dashboard')
+        }
+
       } else {
+        // --- REJESTRACJA ---
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         
-        // Automatycznie ustaw rolę na podstawie emaila
-        const userRole = isAdmin(email) ? 'admin' : 'student'
-        
+        // 3. Zapisz użytkownika w bazie. 
+        // WYMUSZAMY rolę 'student'. Admina ustawisz ręcznie w konsoli Firebase.
         await setDoc(doc(db, 'users', userCredential.user.uid), {
           name: name,
           email: email,
-          role: userRole,
+          role: 'student', // Hardcoded dla bezpieczeństwa MVP
           createdAt: new Date(),
           courses: [],
           progress: {}
         })
         
-        // Przekieruj w zależności od roli
-        navigate(userRole === 'admin' ? '/admin' : '/dashboard')
+        navigate('/dashboard')
       }
     } catch (err) {
-      setError(err.message)
+      console.error(err)
+      // Tłumaczenie błędów Firebase na polski (UX)
+      let msg = "Wystąpił błąd logowania."
+      if (err.code === 'auth/invalid-credential') msg = "Błędny e-mail lub hasło."
+      if (err.code === 'auth/email-already-in-use') msg = "Ten e-mail jest już zajęty."
+      if (err.code === 'auth/weak-password') msg = "Hasło jest za słabe (min. 6 znaków)."
+      setError(msg)
     } finally {
       setLoading(false)
     }
@@ -95,13 +116,13 @@ export default function Login() {
           {error && <div className="error-message">{error}</div>}
           
           <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? 'Proszę czekać...' : (isLogin ? 'Zaloguj' : 'Zarejestruj')}
+            {loading ? 'Przetwarzanie...' : (isLogin ? 'Zaloguj' : 'Zarejestruj')}
           </button>
         </form>
         
         <p className="switch-mode">
           {isLogin ? 'Nie masz konta?' : 'Masz już konto?'}
-          <button onClick={() => setIsLogin(!isLogin)}>
+          <button type="button" onClick={() => setIsLogin(!isLogin)}>
             {isLogin ? 'Zarejestruj się' : 'Zaloguj się'}
           </button>
         </p>

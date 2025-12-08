@@ -1,24 +1,45 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db, auth } from '../config/firebase';
-import { collection, getDocs, doc, updateDoc, arrayUnion, getDoc, deleteDoc, setDoc } from 'firebase/firestore';
-import { isAdmin } from '../config/adminConfig';
-import { coursesData } from '../data/coursesData';
+import { collection, getDocs, doc, updateDoc, arrayUnion, getDoc, deleteDoc } from 'firebase/firestore';
 
 export default function AdminPanel() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [verifyingAdmin, setVerifyingAdmin] = useState(true); // Nowy stan do weryfikacji
   const [activeTab, setActiveTab] = useState('users');
   const navigate = useNavigate();
   const currentUser = auth.currentUser;
 
-  // Sprawdź czy użytkownik jest adminem
+  // 1. BEZPIECZNA WERYFIKACJA ADMINA (Z BAZY DANYCH)
   useEffect(() => {
-    if (!currentUser || !isAdmin(currentUser.email)) {
-      navigate('/dashboard');
-      return;
-    }
-    loadUsers();
+    const verifyAdminStatus = async () => {
+      if (!currentUser) {
+        navigate('/login');
+        return;
+      }
+
+      try {
+        // Pobierz dokument aktualnie zalogowanego użytkownika
+        const userDocRef = doc(db, 'users', currentUser.uid);
+        const userSnap = await getDoc(userDocRef);
+
+        if (userSnap.exists() && userSnap.data().role === 'admin') {
+          // Jest adminem w bazie - pozwól wejść i załaduj dane
+          setVerifyingAdmin(false);
+          loadUsers();
+        } else {
+          // Nie jest adminem - wyrzuć
+          console.warn("Próba nieautoryzowanego dostępu do admin panelu.");
+          navigate('/dashboard');
+        }
+      } catch (error) {
+        console.error("Błąd weryfikacji uprawnień:", error);
+        navigate('/dashboard');
+      }
+    };
+
+    verifyAdminStatus();
   }, [currentUser, navigate]);
 
   const loadUsers = async () => {
@@ -45,9 +66,8 @@ export default function AdminPanel() {
         courses: arrayUnion(courseId)
       });
       
-      // Odśwież listę
-      loadUsers();
-      alert(`Kurs ${courseId} przyznany!`);
+      loadUsers(); // Odśwież listę
+      alert(`✅ Kurs ${courseId} przyznany!`);
     } catch (error) {
       console.error('Błąd przyznawania kursu:', error);
       alert('Błąd przyznawania kursu');
@@ -69,7 +89,7 @@ export default function AdminPanel() {
       });
       
       loadUsers();
-      alert('Wszystkie kursy przyznane!');
+      alert('✅ Wszystkie kursy przyznane!');
     } catch (error) {
       console.error('Błąd:', error);
       alert('Błąd przyznawania kursów');
@@ -77,16 +97,16 @@ export default function AdminPanel() {
   };
 
   // Usuń użytkownika
-  const deleteUser = async (userId, userEmail) => {
+  const deleteUser = async (userId, userEmail, userRole) => {
     // Nie pozwól usunąć samego siebie
     if (currentUser.email === userEmail) {
       alert('❌ Nie możesz usunąć sam/a siebie!');
       return;
     }
 
-    // Nie pozwól usunąć innych adminów
-    if (isAdmin(userEmail)) {
-      alert('❌ Nie możesz usunąć konta administratora!');
+    // Nie pozwól usunąć innych adminów (sprawdzamy rolę z obiektu użytkownika)
+    if (userRole === 'admin') {
+      alert('❌ Nie możesz usunąć innego administratora!');
       return;
     }
 
@@ -105,52 +125,31 @@ export default function AdminPanel() {
       // Usuń z Firestore
       await deleteDoc(doc(db, 'users', userId));
       
-      // Usuń z lokalnej listy
+      // Usuń z lokalnej listy (bez przeładowania)
       setUsers(users.filter(u => u.id !== userId));
       
-      alert('✅ Użytkownik został usunięty!\n\nUWAGA: Konto w Authentication Firebase nadal istnieje. Aby całkowicie usunąć użytkownika, przejdź do Firebase Console → Authentication i usuń tam konto.');
+      alert('✅ Użytkownik został usunięty z bazy danych!');
     } catch (error) {
       console.error('Błąd usuwania użytkownika:', error);
       alert('❌ Błąd podczas usuwania użytkownika: ' + error.message);
     }
   };
 
-  // 🔥 NOWA FUNKCJA: Upload kursów do Firebase
-  const uploadCoursesToFirebase = async () => {
-    try {
-      console.log('🚀 Rozpoczynam upload kursów do Firebase...');
-      console.log('📦 Dane kursów:', coursesData);
-
-      let uploadedCount = 0;
-      const courseKeys = Object.keys(coursesData);
-
-      for (const courseId of courseKeys) {
-        const courseData = coursesData[courseId];
-        console.log(`📚 Uploading: ${courseId}`, courseData);
-
-        // Utwórz dokument w kolekcji 'courses' z ID kursu
-        await setDoc(doc(db, 'courses', courseId), courseData);
-        uploadedCount++;
-        console.log(`✅ Uploaded ${uploadedCount}/${courseKeys.length}: ${courseId}`);
-      }
-
-      console.log(`🎉 Sukces! Załadowano ${uploadedCount} kursów do Firebase!`);
-      alert(`✅ Sukces!\n\nZaładowano ${uploadedCount} kursów do bazy danych Firestore.\n\nMożesz sprawdzić w Firebase Console → Firestore Database → courses`);
-    } catch (error) {
-      console.error('❌ Błąd podczas upload\'u kursów:', error);
-      alert(`❌ Błąd!\n\n${error.message}\n\nSprawdź consolę (F12) po więcej szczegółów.`);
-    }
-  };
-
-  if (loading) {
-    return <div className="loading">Ładowanie panelu admina...</div>;
+  // Ekran ładowania podczas weryfikacji uprawnień
+  if (verifyingAdmin || loading) {
+    return (
+      <div className="loading-screen" style={{padding: '50px', textAlign: 'center'}}>
+        <div className="spinner"></div>
+        <p>{verifyingAdmin ? 'Weryfikacja uprawnień administratora...' : 'Ładowanie danych...'}</p>
+      </div>
+    );
   }
 
   return (
     <div className="admin-panel">
       <div className="admin-header">
         <h1>🔧 Panel Administratora</h1>
-        <p>Zarządzaj platformą Angielski z Anią</p>
+        <p>Zalogowany jako: <strong>{currentUser?.email}</strong></p>
       </div>
 
       <div className="admin-tabs">
@@ -210,8 +209,9 @@ export default function AdminPanel() {
                           <button 
                             className="btn-small btn-primary"
                             onClick={() => grantAllCourses(user.id)}
+                            title="Przyznaj wszystkie kursy"
                           >
-                            🎁 Wszystkie kursy
+                            🎁 Wszystkie
                           </button>
                           <button 
                             className="btn-small btn-secondary"
@@ -219,13 +219,15 @@ export default function AdminPanel() {
                               const courseId = prompt('Podaj ID kursu (np. kurs-a1):');
                               if (courseId) grantCourse(user.id, courseId);
                             }}
+                            title="Dodaj pojedynczy kurs"
                           >
-                            ➕ Dodaj kurs
+                            ➕ Dodaj
                           </button>
                           <button 
                             className="btn-small btn-danger"
-                            onClick={() => deleteUser(user.id, user.email)}
-                            disabled={isAdmin(user.email)}
+                            onClick={() => deleteUser(user.id, user.email, user.role)}
+                            disabled={user.role === 'admin'}
+                            title="Usuń użytkownika"
                           >
                             🗑️ Usuń
                           </button>
@@ -242,44 +244,6 @@ export default function AdminPanel() {
         {activeTab === 'courses' && (
           <div className="courses-section">
             <h2>Zarządzanie kursami</h2>
-            
-            {/* 🔥 NOWY PRZYCISK DO UPLOAD KURSÓW */}
-            <div style={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              padding: '2rem',
-              borderRadius: '12px',
-              marginBottom: '2rem',
-              color: 'white',
-              textAlign: 'center'
-            }}>
-              <h3 style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>
-                🔥 Załaduj kursy do Firebase
-              </h3>
-              <p style={{ marginBottom: '1.5rem', opacity: 0.9 }}>
-                Przenieś dane kursów z pliku lokalnego do bazy Firestore.<br/>
-                Ta operacja jest bezpieczna - możesz ją wykonać wielokrotnie.
-              </p>
-              <button 
-                onClick={uploadCoursesToFirebase}
-                style={{
-                  background: 'white',
-                  color: '#667eea',
-                  padding: '1rem 2rem',
-                  fontSize: '1.1rem',
-                  fontWeight: 'bold',
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
-                onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
-              >
-                📤 Załaduj kursy do bazy danych
-              </button>
-            </div>
-
             <div className="courses-grid-admin">
               <div className="course-card-admin">
                 <h3>📘 Kursy językowe</h3>
