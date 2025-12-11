@@ -201,7 +201,15 @@ export default function StudentDashboard({ user }) {
         <div className="card">
           <h3>📝 Szybkie akcje</h3>
           <div className="quick-actions">
-            <button className="action-btn" onClick={() => navigate('/test-mlodych')}>
+            <button className="action-btn" onClick={() => {
+              navigate('/');
+              setTimeout(() => {
+                const testsSection = document.querySelectorAll('.courses-section')[0];
+                if (testsSection) {
+                  testsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }, 100);
+            }}>
               <span>📋</span>
               <span>Test poziomujący</span>
             </button>
