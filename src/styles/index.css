@@ -257,7 +257,7 @@ body {
 .home-page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
 }
 
 .hero {
@@ -267,6 +267,8 @@ body {
   border-radius: var(--border-radius);
   color: white;
   margin-bottom: 4rem;
+  margin-left: 0;
+  margin-right: 0;
   position: relative;
   overflow: hidden;
 }
