@@ -30,7 +30,6 @@ import StudentDashboard from './pages/StudentDashboard'
 import TutorDashboard from './pages/TutorDashboard'
 import AdminPanel from './pages/AdminPanel'
 import Shop from './pages/Shop'
-import Lessons from './pages/Lessons'
 import CourseViewer from './pages/CourseViewer'
 import { auth } from './config/firebase'
 import { onAuthStateChanged } from 'firebase/auth'
@@ -89,7 +88,6 @@ function App() {
               <Route path="/admin" element={user ? <AdminPanel /> : <Login />} />
               <Route path="/tutor" element={user ? <TutorDashboard user={user} /> : <Login />} />
               <Route path="/shop" element={<Shop user={user} />} />
-              <Route path="/lessons" element={user ? <Lessons user={user} /> : <Login />} />
               <Route path="/course/:courseId" element={<CourseViewer />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

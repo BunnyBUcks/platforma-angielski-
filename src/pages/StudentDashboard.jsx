@@ -213,10 +213,6 @@ export default function StudentDashboard({ user }) {
               <span>📋</span>
               <span>Test poziomujący</span>
             </button>
-            <button className="action-btn" onClick={() => navigate('/lessons')}>
-              <span>📚</span>
-              <span>Wszystkie lekcje</span>
-            </button>
           </div>
         </div>
       </div>
