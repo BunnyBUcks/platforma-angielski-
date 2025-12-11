@@ -38,7 +38,7 @@ export default function Home() {
           <div className="feature-card clickable" onClick={() => navigate('/autorskie-materialy')}>
             <span className="feature-icon">📚</span>
             <h3>Autorskie materiały</h3>
-            <p>Lata doświadczenia zamknięte w każdej lekcji. Starannie opracowane testy, ćwiczenia i kursy, tworzone z pasją przez osobę, która sama przeszła tę drogę od podstaw do perfekcji</p>
+            <p>Starannie opracowane kursy, testy i ćwiczenia tworzone z pasją</p>
             <div className="card-arrow">→</div>
           </div>
           <div className="feature-card clickable" onClick={() => navigate('/indywidualne-podejscie')}>
