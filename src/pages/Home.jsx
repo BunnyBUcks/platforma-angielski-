@@ -21,7 +21,6 @@ export default function Home() {
             >
               Zobacz kursy
             </button>
-            <Link to="/login" className="btn-secondary">Rozpocznij za darmo</Link>
           </div>
         </div>
       </section>
