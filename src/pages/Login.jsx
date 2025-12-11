@@ -24,20 +24,21 @@ export default function Login() {
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
         const uid = userCredential.user.uid
         
-        // 1. Pobierz dokument użytkownika z bazy, aby sprawdzić PRAWDZIWĄ rolę
+        // Pobierz dokument użytkownika z bazy
         const userDocRef = doc(db, 'users', uid)
         const userDoc = await getDoc(userDocRef)
         
         if (userDoc.exists()) {
           const userData = userDoc.data()
-          // 2. Przekieruj na podstawie roli z bazy danych (bezpieczne)
+          console.log("Rola z bazy:", userData.role)
+          
+          // Sprawdź rolę z bazy danych
           if (userData.role === 'admin') {
             navigate('/admin')
           } else {
             navigate('/dashboard')
           }
         } else {
-          // Fallback: jeśli dokument nie istnieje (np. stary user), wyślij do dashboardu
           navigate('/dashboard')
         }
 
@@ -45,12 +46,11 @@ export default function Login() {
         // --- REJESTRACJA ---
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         
-        // 3. Zapisz użytkownika w bazie. 
-        // WYMUSZAMY rolę 'student'. Admina ustawisz ręcznie w konsoli Firebase.
+        // Przy rejestracji zawsze 'student'
         await setDoc(doc(db, 'users', userCredential.user.uid), {
           name: name,
           email: email,
-          role: 'student', // Hardcoded dla bezpieczeństwa MVP
+          role: 'student',
           createdAt: new Date(),
           courses: [],
           progress: {}
@@ -60,12 +60,7 @@ export default function Login() {
       }
     } catch (err) {
       console.error(err)
-      // Tłumaczenie błędów Firebase na polski (UX)
-      let msg = "Wystąpił błąd logowania."
-      if (err.code === 'auth/invalid-credential') msg = "Błędny e-mail lub hasło."
-      if (err.code === 'auth/email-already-in-use') msg = "Ten e-mail jest już zajęty."
-      if (err.code === 'auth/weak-password') msg = "Hasło jest za słabe (min. 6 znaków)."
-      setError(msg)
+      setError("Błąd: " + err.message)
     } finally {
       setLoading(false)
     }
