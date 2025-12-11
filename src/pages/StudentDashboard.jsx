@@ -144,7 +144,15 @@ export default function StudentDashboard({ user }) {
         ) : (
           <div className="empty-state">
             <p>🎓 Nie masz jeszcze żadnych kursów.</p>
-            <button className="btn-primary" onClick={() => navigate('/shop')}>
+            <button className="btn-primary" onClick={() => {
+              navigate('/');
+              setTimeout(() => {
+                const coursesSection = document.querySelector('.courses-section');
+                if (coursesSection) {
+                  coursesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }, 100);
+            }}>
               Przeglądaj kursy
             </button>
           </div>
